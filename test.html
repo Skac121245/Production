@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send to Google Sheets (Works!)</title>
+</head>
+<body>
+  <h2>Submit to Google Sheet</h2>
+  <form id="myForm">
+    <input name="name" placeholder="Your Name" required><br><br>
+    <input name="message" placeholder="Message" required><br><br>
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    const endpoint = "https://google-sheets-cors-proxy.benskraly.repl.co";
+
+    document.getElementById("myForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      fetch(endpoint, {
+        method: "POST",
+        body: JSON.stringify({
+          sheet: "Sheet1",
+          name: data.name,
+          message: data.message
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => res.json())
+      .then(() => {
+        alert("✅ Submitted to Google Sheet!");
+        this.reset();
+      })
+      .catch(err => {
+        console.error(err);
+        alert("🚫 Submission failed. See console for details.");
+      });
+    });
+  </script>
+</body>
+</html>
