@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <title>FRC Production Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
   <style>
     body {
       background-color: #1e1e2f;
@@ -23,6 +20,7 @@
       margin-bottom: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       height: 100%;
+      position: relative;
     }
     .section-title {
       font-size: 1.2rem;
@@ -30,6 +28,16 @@
       border-bottom: 2px solid #444;
       padding-bottom: 0.5rem;
       color: #00bcd4;
+    }
+    .add-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.2rem;
+      background: none;
+      border: none;
+      color: #00bcd4;
+      cursor: pointer;
     }
     .priority { color: #ffc107; }
     .task { color: #4caf50; }
@@ -55,132 +63,156 @@
         font-family: 'Courier New', Courier, monospace;
         text-align: center;
         padding-bottom: 20px;
-        
     }
   </style>
 </head>
 <body>
-    <header>
-        PRO-DUCK-TION
-    </header>
-    <div class="container mb-4">
-        <div class="row g-4">
-          <!-- Add Task -->
-          <div class="col-md-3">
-            <div class="card-custom">
-              <div class="section-title">➕ Add Task</div>
-              <form id="taskForm">
-                <input class="form-control mb-2" name="Task" placeholder="Task" required>
-                <select class="form-control mb-2" name="Category">
-                  <option>Programming</option>
-                  <option>Mechanical</option>
-                  <option>Design</option>
-                </select>
-                <select class="form-control mb-2" name="Status">
-                  <option>To Do</option>
-                  <option>In Progress</option>
-                  <option>Done</option>
-                </select>
-                <button class="btn btn-sm btn-outline-light w-100">Add</button>
-              </form>
-            </div>
-          </div>
-      
-          <!-- Add Priority -->
-          <div class="col-md-3">
-            <div class="card-custom">
-              <div class="section-title">⭐ Add Priority</div>
-              <form id="priorityForm">
-                <input class="form-control mb-2" name="Title" placeholder="Title" required>
-                <input class="form-control mb-2" name="Rank" type="number" placeholder="Rank">
-                <input class="form-control mb-2" name="Category" placeholder="Category">
-                <input class="form-control mb-2" name="Description" placeholder="Description">
-                <button class="btn btn-sm btn-outline-warning w-100">Add</button>
-              </form>
-            </div>
-          </div>
-      
-          <!-- Add Deadline -->
-          <div class="col-md-3">
-            <div class="card-custom">
-              <div class="section-title">📅 Add Deadline</div>
-              <form id="deadlineForm">
-                <input class="form-control mb-2" name="Title" placeholder="Title" required>
-                <input class="form-control mb-2" name="Date" type="date" required>
-                <input class="form-control mb-2" name="Description" placeholder="Description">
-                <button class="btn btn-sm btn-outline-danger w-100">Add</button>
-              </form>
-            </div>
-          </div>
-      
-          <!-- Add Competition -->
-          <div class="col-md-3">
-            <div class="card-custom">
-              <div class="section-title">🏁 Add Competition</div>
-              <form id="compForm">
-                <input class="form-control mb-2" name="Event Name" placeholder="Event Name" required>
-                <input class="form-control mb-2" name="Event Date" type="date" required>
-                <button class="btn btn-sm btn-outline-info w-100">Add</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      
+  <header>PRO-DUCK-TION</header>
+
   <div class="container-fluid">
     <div class="row">
-      
-      <!-- Left 2/3 Panel -->
       <div class="col-lg-8">
         <div class="row">
           <div class="col-md-4">
             <div class="card-custom vh-100-scrollable">
-              <div class="section-title">💻 Programming Tasks</div>
+              <div class="section-title">
+                💻 Programming Tasks
+                <button class="add-button" data-bs-toggle="modal" data-bs-target="#taskModal">➕</button>
+              </div>
               <div id="tasks-programming"></div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="card-custom vh-100-scrollable">
-              <div class="section-title">🔩 Mechanical Tasks</div>
+              <div class="section-title">
+                🔩 Mechanical Tasks
+                <button class="add-button" data-bs-toggle="modal" data-bs-target="#taskModal">➕</button>
+              </div>
               <div id="tasks-mechanical"></div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="card-custom vh-100-scrollable">
-              <div class="section-title">🎨 Design Tasks</div>
+              <div class="section-title">
+                🎨 Design Tasks
+                <button class="add-button" data-bs-toggle="modal" data-bs-target="#taskModal">➕</button>
+              </div>
               <div id="tasks-design"></div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Right 1/3 Panel -->
       <div class="col-lg-4 d-flex flex-column">
-        
-        <!-- Top: Priorities -->
         <div class="card-custom flex-grow-1 mb-3">
-          <div class="section-title">🔥 Current Priorities</div>
+          <div class="section-title">
+            🔥 Current Priorities
+            <button class="add-button" data-bs-toggle="modal" data-bs-target="#priorityModal">➕</button>
+          </div>
           <div id="priorities"></div>
         </div>
-        
-        <!-- Bottom: Deadlines & Competitions -->
         <div class="card-custom flex-grow-1">
-          <div class="section-title">📅 Deadlines</div>
+          <div class="section-title">
+            📅 Deadlines
+            <button class="add-button" data-bs-toggle="modal" data-bs-target="#deadlineModal">➕</button>
+          </div>
           <div id="deadlines" class="mb-3"></div>
-          <div class="section-title">🏁 Competitions</div>
+          <div class="section-title">
+            🏁 Competitions
+            <button class="add-button" data-bs-toggle="modal" data-bs-target="#compModal">➕</button>
+          </div>
           <div id="competitions"></div>
         </div>
-
       </div>
     </div>
   </div>
 
+  <!-- Modals -->
+  <div class="modal fade" id="taskModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Task</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="taskForm" class="modal-body">
+          <input class="form-control mb-2" name="Task" placeholder="Task" required>
+          <select class="form-control mb-2" name="Category">
+            <option>Programming</option>
+            <option>Mechanical</option>
+            <option>Design</option>
+          </select>
+          <select class="form-control mb-2" name="Status">
+            <option>To Do</option>
+            <option>In Progress</option>
+            <option>Done</option>
+          </select>
+          <button class="btn btn-outline-light w-100 mt-2" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="priorityModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Priority</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="priorityForm" class="modal-body">
+          <input class="form-control mb-2" name="Title" placeholder="Title" required>
+          <input class="form-control mb-2" name="Rank" type="number" placeholder="Rank">
+          <input class="form-control mb-2" name="Category" placeholder="Category">
+          <input class="form-control mb-2" name="Description" placeholder="Description">
+          <button class="btn btn-outline-warning w-100 mt-2" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deadlineModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Deadline</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="deadlineForm" class="modal-body">
+          <input class="form-control mb-2" name="Title" placeholder="Title" required>
+          <input class="form-control mb-2" name="Date" type="date" required>
+          <input class="form-control mb-2" name="Description" placeholder="Description">
+          <button class="btn btn-outline-danger w-100 mt-2" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="compModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Competition</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="compForm" class="modal-body">
+          <input class="form-control mb-2" name="Event Name" placeholder="Event Name" required>
+          <input class="form-control mb-2" name="Event Date" type="date" required>
+          <button class="btn btn-outline-info w-100 mt-2" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycby73hCbTZ990H1Bd7_llkV4UH0YrgRp5UOti56U2L_OTahfxLQDKA7xcPE2JrNpOTEw/exec";
+    const endpoint = "https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbwkAKEe5IUAF0wjuuWds5Av-9o-1vjpSOJ9p_cWSOzWXJtiBv8DhmzUYvOA38MNKjE2/exec";
 
-
-
-    fetch(endpoint)
+    fetch(endpoint, {
+      method: "GET",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
       .then(res => res.json())
       .then(data => {
         const priorities = data.Priorities.sort((a, b) => a.Rank - b.Rank);
@@ -226,33 +258,34 @@
         document.body.appendChild(document.createTextNode("Error loading data: " + err));
       });
 
-      const submitForm = (formId, sheetName) => {
-  const form = document.getElementById(formId);
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-    data.sheet = sheetName;
-    fetch(endpoint, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" }
-    }).then(res => {
-      if (!res.ok) throw new Error("Failed to submit");
-      return res.json();
-    }).then(() => {
-      alert(`Submitted to ${sheetName}`);
-      form.reset();
-      location.reload(); // or re-fetch and update DOM instead
-    }).catch(err => alert("Error: " + err));
-  });
-};
+    const submitForm = (formId, sheetName) => {
+      const form = document.getElementById(formId);
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        data.sheet = sheetName;
+        fetch(endpoint, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest"
+          }
+        }).then(res => {
+          if (!res.ok) throw new Error("Failed to submit");
+          return res.json();
+        }).then(() => {
+          alert(`Submitted to ${sheetName}`);
+          form.reset();
+          location.reload();
+        }).catch(err => console.log("Error: " + err));
+      });
+    };
 
-submitForm("taskForm", "Tasks");
-submitForm("priorityForm", "Priorities");
-submitForm("deadlineForm", "Deadlines");
-submitForm("compForm", "Competitions");
-
+    submitForm("taskForm", "Tasks");
+    submitForm("priorityForm", "Priorities");
+    submitForm("deadlineForm", "Deadlines");
+    submitForm("compForm", "Competitions");
   </script>
-
 </body>
 </html>
